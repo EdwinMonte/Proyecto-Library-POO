@@ -46,9 +46,6 @@
             txtTitulo = new TextBox();
             lblSucursal = new Label();
             txtSucursal = new TextBox();
-            lblNombreUsuario = new Label();
-            lblCorreoUsuario = new Label();
-            btnVerUsuario = new Button();
             SuspendLayout();
             // 
             // txtPrice
@@ -232,44 +229,11 @@
             txtSucursal.Size = new Size(125, 34);
             txtSucursal.TabIndex = 49;
             // 
-            // lblNombreUsuario
-            // 
-            lblNombreUsuario.AutoSize = true;
-            lblNombreUsuario.Location = new Point(1226, 125);
-            lblNombreUsuario.Name = "lblNombreUsuario";
-            lblNombreUsuario.Size = new Size(50, 20);
-            lblNombreUsuario.TabIndex = 50;
-            lblNombreUsuario.Text = "label1";
-            lblNombreUsuario.Click += btnVerUsuario_Click;
-            // 
-            // lblCorreoUsuario
-            // 
-            lblCorreoUsuario.AutoSize = true;
-            lblCorreoUsuario.Location = new Point(1226, 167);
-            lblCorreoUsuario.Name = "lblCorreoUsuario";
-            lblCorreoUsuario.Size = new Size(50, 20);
-            lblCorreoUsuario.TabIndex = 51;
-            lblCorreoUsuario.Text = "label2";
-            lblCorreoUsuario.Click += btnVerUsuario_Click;
-            // 
-            // btnVerUsuario
-            // 
-            btnVerUsuario.Location = new Point(1237, 224);
-            btnVerUsuario.Name = "btnVerUsuario";
-            btnVerUsuario.Size = new Size(135, 34);
-            btnVerUsuario.TabIndex = 52;
-            btnVerUsuario.Text = "Ver Usuario";
-            btnVerUsuario.UseVisualStyleBackColor = true;
-            btnVerUsuario.Click += btnVerUsuario_Click;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1417, 686);
-            Controls.Add(btnVerUsuario);
-            Controls.Add(lblCorreoUsuario);
-            Controls.Add(lblNombreUsuario);
             Controls.Add(txtSucursal);
             Controls.Add(lblSucursal);
             Controls.Add(txtPrice);
@@ -314,8 +278,5 @@
         private TextBox txtTitulo;
         private Label lblSucursal;
         private TextBox txtSucursal;
-        private Label lblNombreUsuario;
-        private Label lblCorreoUsuario;
-        private Button btnVerUsuario;
     }
 }

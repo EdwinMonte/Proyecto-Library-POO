@@ -2,14 +2,13 @@ namespace Proyecto_Library_POO
 {
     public partial class Form1 : Form
     {
-        public string NombreUsuario { get; set; }
-        public string CorreoUsuario { get; set; }
+       
         private Biblioteca biblioteca;
 
         public Form1()
         {
             InitializeComponent();
-            biblioteca = new Biblioteca();
+            biblioteca = new Biblioteca(100);
             ConfigurarListView();
             // Configurar columnas del ListView
             lstvLibros.View = View.Details;
@@ -19,16 +18,10 @@ namespace Proyecto_Library_POO
             lstvLibros.Columns.Add("Precio", 70);
             lstvLibros.Columns.Add("Sucursal", 100);
 
-            // Asociar evento click del botón Ver Usuario
-            btnVerUsuario.Click += btnVerUsuario_Click;
+            
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            lblNombreUsuario.Text = $"Nombre: {NombreUsuario}";
-            lblCorreoUsuario.Text = $"Correo: {CorreoUsuario}";
-            MessageBox.Show($"Bienvenido, {NombreUsuario} ({CorreoUsuario})", "Bienvenido");
-        }
+       
 
         private void ConfigurarListView()
         {
@@ -85,7 +78,7 @@ namespace Proyecto_Library_POO
             {
                 Biblioteca.ExportarAJson(biblioteca, saveFileDialog.FileName);
                 MessageBox.Show("Biblioteca exportada exitosamente.");
-                System.Diagnostics.Process.Start(saveFileDialog.FileName);
+                
             }
         }
 
@@ -111,7 +104,7 @@ namespace Proyecto_Library_POO
         {
             if (lstvLibros.Items.Count == 0)
             {
-                MessageBox.Show("No hay libros en la lista para exportar.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("No hay libros para exportar.");
                 return;
             }
 
@@ -119,9 +112,15 @@ namespace Proyecto_Library_POO
             saveFileDialog.Filter = "Archivos Excel (*.xlsx)|*.xlsx";
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                Exportador.ExportarAExcel(saveFileDialog.FileName, biblioteca.ObtenerLibros());
-                MessageBox.Show("Datos exportados exitosamente a Excel.");
-                System.Diagnostics.Process.Start(saveFileDialog.FileName);
+                try
+                {
+                    Exportador.ExportarAExcel(saveFileDialog.FileName, biblioteca.ObtenerLibros());
+                    MessageBox.Show("Datos exportados exitosamente a Excel.");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ocurrió un error al exportar a Excel: " + ex.Message);
+                }
             }
         }
 
@@ -163,7 +162,7 @@ namespace Proyecto_Library_POO
 
         private void CargarDesdeTxt(string rutaArchivo)
         {
-            biblioteca = new Biblioteca();
+            biblioteca = new Biblioteca(100); // Reiniciar la biblioteca
             string[] lineas = File.ReadAllLines(rutaArchivo);
             foreach (string linea in lineas)
             {
@@ -172,11 +171,19 @@ namespace Proyecto_Library_POO
                 {
                     string titulo = partes[0];
                     string autor = partes[1];
+                    string sucursal = partes[4];
                     if (int.TryParse(partes[2], out int paginas) && decimal.TryParse(partes[3], out decimal precio))
                     {
-                        string sucursal = partes[4];
                         Libro libro = new Libro(titulo, autor, paginas, precio, sucursal);
-                        biblioteca.AgregarLibro(libro);
+                        try
+                        {
+                            biblioteca.AgregarLibro(libro);
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            // Ignorar si no hay más espacio en la biblioteca
+                            break;
+                        }
                     }
                 }
             }
@@ -240,11 +247,7 @@ namespace Proyecto_Library_POO
             }
         }
 
-        private void btnVerUsuario_Click(object sender, EventArgs e)
-        {
-            lblNombreUsuario.Text = $"Nombre: {NombreUsuario}";
-            lblCorreoUsuario.Text = $"Correo: {CorreoUsuario}";
-        }
+       
     }
 }
 

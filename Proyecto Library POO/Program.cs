@@ -41,11 +41,7 @@ namespace Proyecto_Library_POO
                 string nombreUsuario = "Nombre del Usuario";
                 string correoUsuario = "correo@ejemplo.com";
 
-                Form1 form1 = new Form1
-                {
-                    NombreUsuario = nombreUsuario,
-                    CorreoUsuario = correoUsuario
-                };
+               
                 
 
                 FormBienvenida bienvenidaForm = new FormBienvenida();

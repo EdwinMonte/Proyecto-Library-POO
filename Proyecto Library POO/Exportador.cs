@@ -2,11 +2,15 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Runtime.CompilerServices;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Newtonsoft.Json;
 using OfficeOpenXml;
 using Proyecto_Library_POO;
+using ClosedXML.Excel;
+
+
 
 public static class Exportador
 {
@@ -35,41 +39,33 @@ public static class Exportador
         Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
     }
 
-    public static void ExportarAExcel(string rutaArchivo, List<Libro> libros)
+    public static void ExportarAExcel(string rutaArchivo, Libro[] libros)
     {
-        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-        using (ExcelPackage package = new ExcelPackage())
+        using (var workbook = new XLWorkbook())
         {
-            ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Libros");
+            var worksheet = workbook.Worksheets.Add("Libros");
 
-            // Crear encabezados de columnas
-            worksheet.Cells[1, 1].Value = "Título";
-            worksheet.Cells[1, 2].Value = "Autor";
-            worksheet.Cells[1, 3].Value = "Páginas";
-            worksheet.Cells[1, 4].Value = "Precio";
-            worksheet.Cells[1, 5].Value = "Sucursal";
+            worksheet.Cell(1, 1).Value = "Título";
+            worksheet.Cell(1, 2).Value = "Autor";
+            worksheet.Cell(1, 3).Value = "Páginas";
+            worksheet.Cell(1, 4).Value = "Precio";
+            worksheet.Cell(1, 5).Value = "Sucursal";
 
-            // Añadir los datos de los libros
-            int row = 2;
-            foreach (var libro in libros)
+            for (int i = 0; i < libros.Length; i++)
             {
-                worksheet.Cells[row, 1].Value = libro.Titulo;
-                worksheet.Cells[row, 2].Value = libro.Autor;
-                worksheet.Cells[row, 3].Value = libro.Paginas;
-                worksheet.Cells[row, 4].Value = libro.Precio.ToString("C", CultureInfo.CurrentCulture);
-                worksheet.Cells[row, 5].Value = libro.Sucursal;
-                row++;
+                worksheet.Cell(i + 2, 1).Value = libros[i].Titulo;
+                worksheet.Cell(i + 2, 2).Value = libros[i].Autor;
+                worksheet.Cell(i + 2, 3).Value = libros[i].Paginas;
+                worksheet.Cell(i + 2, 4).Value = libros[i].Precio;
+                worksheet.Cell(i + 2, 5).Value = libros[i].Sucursal;
             }
 
-            // Guardar el archivo
-            FileInfo fileInfo = new FileInfo(rutaArchivo);
-            package.SaveAs(fileInfo);
+            workbook.SaveAs(rutaArchivo);
         }
 
-        // Abrir el archivo automáticamente
+        // Abre el archivo Excel
         Process.Start(new ProcessStartInfo(rutaArchivo) { UseShellExecute = true });
     }
-
 
     public static void ExportarAJson(Biblioteca biblioteca, string filePath)
     {
@@ -80,3 +76,4 @@ public static class Exportador
         Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
     }
 }
+

@@ -12,7 +12,7 @@ namespace Proyecto_Library_POO
         public string Autor { get; set; }
         public int Paginas { get; set; }
         public decimal Precio { get; set; }
-        public string Sucursal { get; set; } // Nueva propiedad
+        public string Sucursal { get; set; } 
 
         public Libro(string titulo, string autor, int paginas, decimal precio, string sucursal)
         {

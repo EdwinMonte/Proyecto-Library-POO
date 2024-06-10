@@ -26,7 +26,7 @@ namespace Proyecto_Library_POO
             InitializeComponent();
             lblTitle.Text = $"Título: {titulo}";
             lblPrice.Text = $"Precio: {precio:C}";
-            lblSucursal.Text = $"Sucursal: {sucursal}"; // Asegúrate de tener un Label para la sucursal
+            lblSucursal.Text = $"Sucursal: {sucursal}"; 
             LibroSeleccionado = new Libro(titulo, autor, paginas, precio, sucursal);
         }
 
